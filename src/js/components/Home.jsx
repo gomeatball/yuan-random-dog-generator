@@ -1,26 +1,33 @@
 import React from "react";
+import { useState, useEffect } from "react";
+import { DogPhotoCard } from "./DogPhotoCard";
 
-//include images into your bundle
-import rigoImage from "../../img/rigo-baby.jpg";
 
 //create your first component
 const Home = () => {
-	return (
-		<div className="text-center">
-            
+ const [photo, setPhoto] = useState("");
 
-			<h1 className="text-center mt-5">Hello Rigo!</h1>
-			<p>
-				<img src={rigoImage} />
-			</p>
-			<a href="#" className="btn btn-success">
-				If you see this green button... bootstrap is working...
-			</a>
-			<p>
-				Made by{" "}
-				<a href="http://www.4geeksacademy.com">4Geeks Academy</a>, with
-				love!
-			</p>
+useEffect(()=> {
+	
+		const fetchData = async() => {
+	    const response = await fetch("https://dog.ceo/api/breeds/image/random");
+		if (!response.ok) {
+			throw new Error("cannot find correct fetched response");
+			
+		}
+		const data = await response.json();
+		console.log(data);
+		const dogPhoto = data.message;
+		setPhoto(dogPhoto);
+	}
+		
+
+	fetchData();
+},[])
+	return (
+		<div>
+		<DogPhotoCard image={photo}/>
+
 		</div>
 	);
 };
